@@ -8,3 +8,9 @@ export const useShowMovies = searchKey =>
     queryKey: [QUERY_KEYS.MOVIES, searchKey],
     queryFn: () => moviesApi.show(searchKey),
   });
+
+export const useFetchMovie = searchId =>
+  useQuery({
+    queryKey: [QUERY_KEYS.MOVIE, searchId],
+    queryFn: () => moviesApi.fetch(searchId),
+  });

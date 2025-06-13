@@ -8,4 +8,12 @@ const show = searchKey =>
     },
   });
 
-export const moviesApi = { show };
+const fetch = searchId =>
+  axios.get("/", {
+    params: {
+      i: `${searchId}`,
+      apikey: process.env.REACT_APP_OMDB_API_KEY,
+    },
+  });
+
+export const moviesApi = { show, fetch };
