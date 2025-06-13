@@ -7,11 +7,19 @@ import MovieDetails from "./MovieDetails";
 const MovieCard = ({ movie }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { addHistoryItem } = useHistoryItemStore();
+  const { addHistoryItem, historyItems, setItemActive, updateHistoryItem } =
+    useHistoryItemStore();
 
   const handleClick = item => {
     setIsModalOpen(prev => !prev);
-    addHistoryItem(item);
+    if (!historyItems.find(ele => ele.imdbID === item.imdbID)) {
+      const newItem = { ...item, date: Date.now() };
+      addHistoryItem(newItem);
+    } else {
+      const prevItem = historyItems.find(ele => ele.imdbID === item.imdbID);
+      updateHistoryItem(prevItem);
+    }
+    setItemActive();
   };
 
   return (
