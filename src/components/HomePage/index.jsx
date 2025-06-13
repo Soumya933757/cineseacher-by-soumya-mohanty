@@ -70,7 +70,7 @@ const HomePage = () => {
   }, [movies]);
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-between p-10 md:w-9/12">
+    <div className="homepage flex w-full flex-col items-center justify-between p-10 md:h-screen md:w-9/12">
       <div className="w-full">
         <Input
           placeholder="Input search text"

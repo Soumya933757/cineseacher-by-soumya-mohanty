@@ -17,4 +17,11 @@ body {
     overflow-y: scroll;
     scrollbar-width: none;
   }
+
+}
+@media (max-width: 768px) {
+  .homepage{
+    height: 100vh;
+  }
+
 }
