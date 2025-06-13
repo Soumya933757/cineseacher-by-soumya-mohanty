@@ -11,3 +11,10 @@ body {
   background-color: #2f62ff;
   color: white;
 }
+@media (max-width: 500px) {
+  .card {
+    height: 80vh;
+    overflow-y: scroll;
+    scrollbar-width: none;
+  }
+}
