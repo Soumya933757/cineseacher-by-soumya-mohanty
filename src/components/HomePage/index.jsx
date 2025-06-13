@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import PageLoader from "components/commons/PageLoader";
 import { useShowMovies } from "hooks/reactQuery/moviesApi";
@@ -12,6 +12,23 @@ import MovieCard from "./MovieCard";
 const HomePage = () => {
   const [searchKey, setSearchKey] = useState("");
   const [page, setPage] = useState(1);
+
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    const handleKeyDown = e => {
+      if (e.key === "/") {
+        e.preventDefault();
+        inputRef.current?.focus();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   const handleChange = e => {
     setSearchKey(e.target.value);
@@ -36,6 +53,7 @@ const HomePage = () => {
         <Input
           placeholder="Input search text"
           prefix={<Search />}
+          ref={inputRef}
           type="search"
           value={searchKey}
           onChange={e => handleChange(e)}
