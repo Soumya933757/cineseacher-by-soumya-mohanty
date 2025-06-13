@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import PageLoader from "components/commons/PageLoader";
 import { useShowMovies } from "hooks/reactQuery/moviesApi";
+import useDebounce from "hooks/useDebounce";
 import { Search } from "neetoicons";
 import { Input } from "neetoui";
 
@@ -10,7 +11,9 @@ import MovieCard from "./MovieCard";
 const HomePage = () => {
   const [searchKey, setSearchKey] = useState("");
 
-  const { data: movies = {}, isFetching } = useShowMovies(searchKey);
+  const debouncedSearch = useDebounce(searchKey);
+
+  const { data: movies = {}, isFetching } = useShowMovies(debouncedSearch);
   console.log("Movies data:", movies);
 
   return (
