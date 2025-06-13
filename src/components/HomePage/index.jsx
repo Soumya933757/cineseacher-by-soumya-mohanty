@@ -4,7 +4,7 @@ import PageLoader from "components/commons/PageLoader";
 import { useShowMovies } from "hooks/reactQuery/moviesApi";
 import useDebounce from "hooks/useDebounce";
 import { Search } from "neetoicons";
-import { Input, Pagination } from "neetoui";
+import { Input, Pagination, Toastr } from "neetoui";
 import { useHistory, useLocation } from "react-router-dom";
 
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "./constants";
@@ -58,6 +58,16 @@ const HomePage = () => {
     }
     history.replace({ search: params.toString() });
   }, [debouncedSearch, page, history]);
+
+  useEffect(() => {
+    if (
+      movies &&
+      (movies.Error === "Movie not found!" ||
+        movies.Error === "Too many results.")
+    ) {
+      Toastr.error(movies.Error, { autoClose: 2000, position: "bottom-left" });
+    }
+  }, [movies]);
 
   return (
     <div className="flex h-full w-9/12 flex-col items-center justify-between p-10">
