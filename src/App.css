@@ -7,3 +7,7 @@ body{
 .inactive{
     background-color: #E4E4F8;
 }
+.active{
+    background-color: #2f62ff;
+    color:white;
+}
