@@ -5,13 +5,17 @@ import { useShowMovies } from "hooks/reactQuery/moviesApi";
 import useDebounce from "hooks/useDebounce";
 import { Search } from "neetoicons";
 import { Input, Pagination } from "neetoui";
+import { useHistory, useLocation } from "react-router-dom";
 
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "./constants";
 import MovieCard from "./MovieCard";
 
 const HomePage = () => {
-  const [searchKey, setSearchKey] = useState("");
-  const [page, setPage] = useState(1);
+  const history = useHistory();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const [searchKey, setSearchKey] = useState(queryParams.get("search") || "");
+  const [page, setPage] = useState(Number(queryParams.get("page")) || 1);
 
   const inputRef = useRef(null);
 
@@ -45,7 +49,15 @@ const HomePage = () => {
     debouncedSearch,
     page
   );
-  console.log("Movies data:", movies);
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (debouncedSearch.trim()) {
+      params.set("search", debouncedSearch);
+      params.set("page", page);
+    }
+    history.replace({ search: params.toString() });
+  }, [debouncedSearch, page, history]);
 
   return (
     <div className="flex h-full w-9/12 flex-col items-center justify-between p-10">
