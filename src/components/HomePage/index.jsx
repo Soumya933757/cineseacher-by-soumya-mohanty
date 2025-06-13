@@ -70,7 +70,7 @@ const HomePage = () => {
   }, [movies]);
 
   return (
-    <div className="flex h-full w-9/12 flex-col items-center justify-between p-10">
+    <div className="flex h-full w-full flex-col items-center justify-between p-10 md:w-9/12">
       <div className="w-full">
         <Input
           placeholder="Input search text"
@@ -88,12 +88,12 @@ const HomePage = () => {
           <div className="h-full w-full">
             {movies?.Search?.length > 0 ? (
               <div className="flex h-full w-full flex-col justify-between gap-4">
-                <div className="grid grid-cols-1 grid-rows-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 ">
+                <div className="grid  grid-cols-2 grid-rows-2 gap-4 md:grid-cols-3 lg:grid-cols-5 ">
                   {movies.Search.map((movie, index) => (
                     <MovieCard key={index} movie={movie} />
                   ))}
                 </div>
-                <div className="self-end">
+                <div className="mt-4 self-center lg:self-end">
                   <Pagination
                     count={Number(movies.totalResults)}
                     navigate={page => handlePageChange(page)}

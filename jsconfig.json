@@ -38,5 +38,10 @@
     "jsx": "preserve"
   },
   "exclude": ["**/node_modules", "**/.*/"],
-  "include": ["./**/*.js", "./**/*.jsx", "./**/*.d.ts", "src/components/HomePage"]
+  "include": [
+    "./**/*.js",
+    "./**/*.jsx",
+    "./**/*.d.ts",
+    "src/components/HomePage"
+  ]
 }

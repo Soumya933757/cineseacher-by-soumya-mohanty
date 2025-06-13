@@ -6,7 +6,7 @@ import HomePage from "components/HomePage";
 import "./App.css";
 
 const App = () => (
-  <div className="relative flex h-screen w-screen bg-[#f5f5f5] ">
+  <div className="relative flex min-h-screen w-screen flex-col bg-[#f5f5f5] md:flex-row ">
     <HomePage />
     <History />
   </div>

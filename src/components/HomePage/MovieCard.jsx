@@ -43,7 +43,7 @@ const MovieCard = ({ movie }) => {
         {movie?.Type === "movie" ? "Movie" : "Series"} • {movie?.Year}
       </p>
       <button
-        className="mt-2 rounded-md bg-gray-100 px-4 py-2 font-semibold text-blue-600 hover:bg-gray-300"
+        className="mt-2 rounded-md bg-gray-100 px-2 py-1 font-semibold text-blue-600  hover:bg-gray-300 sm:px-4 sm:py-2"
         onClick={() => handleClick(movie)}
       >
         View details

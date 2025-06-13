@@ -12,24 +12,27 @@ const MovieDetails = ({ searchId, setIsModalOpen }) => {
       {isFetching ? (
         <PageLoader />
       ) : (
-        <div className="absolute flex w-6/12 flex-col justify-evenly rounded-md bg-white p-10 shadow-lg">
+        <div className="card absolute flex w-5/6  flex-col justify-evenly rounded-md bg-white p-10 shadow-lg md:w-6/12">
           <div className="mb-4 flex flex-col gap-2">
-            <div className="flex w-full justify-between">
+            <div className="flex w-full justify-between gap-4">
               <div className="text-2xl font-bold">{data?.Title}</div>
               <Close
-                className="cursor-pointer rounded-sm border"
+                className="cross cursor-pointer rounded-sm border "
                 onClick={() => setIsModalOpen(false)}
               />
             </div>
             <div className="flex gap-2">
               {data?.Genre?.split(",").map((genre, index) => (
-                <span className="rounded-sm bg-gray-300 px-2" key={index}>
+                <span
+                  className="rounded-sm bg-gray-300 px-1 lg:px-2"
+                  key={index}
+                >
                   {genre}
                 </span>
               ))}
             </div>
           </div>
-          <div className="flex w-full justify-between ">
+          <div className="flex w-full  justify-between ">
             <div className="w-4/12">
               <img
                 alt={data?.Title}
