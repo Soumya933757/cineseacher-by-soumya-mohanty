@@ -4,7 +4,7 @@ import { Typography } from "neetoui";
 import { NavLink } from "react-router-dom";
 
 const Header = () => (
-  <div className="fixed z-10 flex h-12 w-full items-center gap-10 border-b-2 border-gray-200 px-10">
+  <div className="header fixed z-10 flex h-12 w-full items-center gap-10 border-b-2 border-gray-200 px-10">
     <Typography className="font-bold" style="h4">
       <span className="text-blue-500">Cine</span> Searcher
     </Typography>
