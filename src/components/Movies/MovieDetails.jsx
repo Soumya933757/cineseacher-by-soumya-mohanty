@@ -3,9 +3,20 @@ import React from "react";
 import PageLoader from "components/commons/PageLoader";
 import { useFetchMovie } from "hooks/reactQuery/moviesApi";
 import { Close } from "neetoicons";
+import useFavouriteItemStore from "stores/useFavouriteItemStore";
 
 const MovieDetails = ({ searchId, setIsModalOpen }) => {
+  const { favouriteItems, addFavouriteItem, removeFavouriteItem } =
+    useFavouriteItemStore();
+
   const { data, isFetching } = useFetchMovie(searchId);
+
+  const handlefavourites = item => {
+    favouriteItems.includes(item)
+      ? removeFavouriteItem(item)
+      : addFavouriteItem(item);
+    console.log(favouriteItems);
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -15,7 +26,14 @@ const MovieDetails = ({ searchId, setIsModalOpen }) => {
         <div className="card absolute flex w-5/6  flex-col justify-evenly rounded-md bg-white p-10 shadow-lg md:w-6/12">
           <div className="mb-4 flex flex-col gap-2">
             <div className="flex w-full justify-between gap-4">
-              <div className="text-2xl font-bold">{data?.Title}</div>
+              <div className="flex items-center gap-4">
+                <div className="text-2xl font-bold">{data?.Title}</div>
+                <button onClick={() => handlefavourites(data)}>
+                  {favouriteItems?.find(ele => ele.imdbID === data.imdbID)
+                    ? "★"
+                    : "☆"}
+                </button>
+              </div>
               <Close
                 className="cross cursor-pointer rounded-sm border "
                 onClick={() => setIsModalOpen(false)}
