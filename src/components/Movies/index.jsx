@@ -10,7 +10,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "./constants";
 import MovieCard from "./MovieCard";
 
-const HomePage = () => {
+const Movies = () => {
   const history = useHistory();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -70,7 +70,7 @@ const HomePage = () => {
   }, [movies]);
 
   return (
-    <div className="homepage flex w-full flex-col items-center justify-between p-10 md:h-screen md:w-9/12">
+    <div className="homepage flex w-full flex-col items-center justify-between p-10 pt-16 md:h-screen md:w-9/12">
       <div className="w-full">
         <Input
           placeholder="Input search text"
@@ -114,4 +114,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default Movies;

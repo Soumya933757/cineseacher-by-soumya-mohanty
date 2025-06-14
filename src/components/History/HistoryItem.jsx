@@ -16,7 +16,7 @@ const HistoryItem = ({ item }) => {
     <div
       ref={item.imdbID === active.imdbID ? itemRef : null}
       className={`${
-        item.imdbID === active.imdbID ? "active" : "inactive"
+        item.imdbID === active.imdbID ? "recent" : "old"
       } w-full rounded-md px-1 py-1 text-center `}
     >
       {item.Title}
