@@ -42,6 +42,6 @@
     "./**/*.js",
     "./**/*.jsx",
     "./**/*.d.ts",
-    "src/components/HomePage"
+    "src/components/Movies"
   ]
 }
