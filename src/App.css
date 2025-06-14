@@ -4,10 +4,10 @@ body {
 .History {
   scrollbar-width: none;
 }
-.inactive {
+.old {
   background-color: #e4e4f8;
 }
-.active {
+.recent {
   background-color: #2f62ff;
   color: white;
 }
@@ -24,4 +24,7 @@ body {
     height: 100vh;
   }
 
+}
+.active{
+  color: #2f62ff;
 }
