@@ -3,12 +3,13 @@ import React, { useEffect, useRef, useState } from "react";
 import PageLoader from "components/commons/PageLoader";
 import { useShowMovies } from "hooks/reactQuery/moviesApi";
 import useDebounce from "hooks/useDebounce";
-import { Search } from "neetoicons";
+import { Filter, Search } from "neetoicons";
 import { Input, Pagination, Toastr } from "neetoui";
 import { useHistory, useLocation } from "react-router-dom";
 
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "./constants";
 import MovieCard from "./MovieCard";
+import MovieFilter from "./MovieFilter";
 
 const Movies = () => {
   const history = useHistory();
@@ -16,6 +17,12 @@ const Movies = () => {
   const queryParams = new URLSearchParams(location.search);
   const [searchKey, setSearchKey] = useState(queryParams.get("search") || "");
   const [page, setPage] = useState(Number(queryParams.get("page")) || 1);
+  const [filterData, setFilterData] = useState({
+    year: "",
+    movie: true,
+    series: true,
+  });
+  const [isDropdown, setIsDropdown] = useState(false);
 
   const inputRef = useRef(null);
 
@@ -44,10 +51,12 @@ const Movies = () => {
   };
 
   const debouncedSearch = useDebounce(searchKey);
+  const debouncedFilterData = useDebounce(filterData);
 
   const { data: movies = {}, isFetching } = useShowMovies(
     debouncedSearch,
-    page
+    page,
+    debouncedFilterData
   );
 
   useEffect(() => {
@@ -71,7 +80,7 @@ const Movies = () => {
 
   return (
     <div className="homepage flex w-full flex-col items-center justify-between p-10 pt-16 md:h-screen md:w-9/12">
-      <div className="w-full">
+      <div className="relative flex w-full items-center gap-3">
         <Input
           placeholder="Input search text"
           prefix={<Search />}
@@ -80,6 +89,17 @@ const Movies = () => {
           value={searchKey}
           onChange={e => handleChange(e)}
         />
+        <Filter
+          className="cursor-pointer"
+          onClick={() => setIsDropdown(prev => !prev)}
+        />
+        {isDropdown && (
+          <MovieFilter
+            filterData={filterData}
+            setFilterData={setFilterData}
+            setIsDropdown={setIsDropdown}
+          />
+        )}
       </div>
       <div className="mt-10 h-full w-full">
         {isFetching ? (
