@@ -25,7 +25,7 @@ const useHistoryItemStore = create(
         })),
       removeHistoryItem: id =>
         set(state => ({
-          historyItems: state.historyItems.filter(item => item.id !== id),
+          historyItems: state.historyItems.filter(item => item.imdbID !== id),
         })),
       clearHistory: () => set({ historyItems: [] }),
     }),
