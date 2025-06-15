@@ -1,10 +1,16 @@
 import React, { useEffect, useRef } from "react";
 
+import { Delete } from "neetoicons";
 import useHistoryItemStore from "stores/useHistoryItemStore";
 
 const HistoryItem = ({ item }) => {
-  const { active } = useHistoryItemStore();
+  const { active, removeHistoryItem, setItemActive } = useHistoryItemStore();
   const itemRef = useRef(0);
+
+  const handleDelete = () => {
+    removeHistoryItem(item.imdbID);
+    setItemActive();
+  };
 
   useEffect(() => {
     if (itemRef.current) {
@@ -17,9 +23,12 @@ const HistoryItem = ({ item }) => {
       ref={item.imdbID === active.imdbID ? itemRef : null}
       className={`${
         item.imdbID === active.imdbID ? "recent" : "old"
-      } w-full rounded-md px-1 py-1 text-center `}
+      } flex w-full items-center justify-between rounded-md px-2 py-1 `}
     >
-      {item.Title}
+      <div>{item.Title}</div>
+      <button onClick={handleDelete}>
+        <Delete size="15" />
+      </button>
     </div>
   );
 };
