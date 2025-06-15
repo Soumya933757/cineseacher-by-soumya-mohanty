@@ -3,6 +3,7 @@ import React from "react";
 import PageLoader from "components/commons/PageLoader";
 import { useFetchMovie } from "hooks/reactQuery/moviesApi";
 import { Close } from "neetoicons";
+import { Tooltip, Typography } from "neetoui";
 import useFavouriteItemStore from "stores/useFavouriteItemStore";
 
 const MovieDetails = ({ searchId, setIsModalOpen }) => {
@@ -26,13 +27,20 @@ const MovieDetails = ({ searchId, setIsModalOpen }) => {
         <div className="card absolute flex w-5/6  flex-col justify-evenly rounded-md bg-white p-10 shadow-lg md:w-6/12">
           <div className="mb-4 flex flex-col gap-2">
             <div className="flex w-full justify-between gap-4">
-              <div className="flex items-center gap-4">
-                <div className="text-2xl font-bold">{data?.Title}</div>
-                <button onClick={() => handlefavourites(data)}>
-                  {favouriteItems?.find(ele => ele.imdbID === data.imdbID)
-                    ? "★"
-                    : "☆"}
-                </button>
+              <div className="flex items-center">
+                <div className="flex items-center gap-4 text-2xl font-bold ">
+                  <Typography style="h3">{data?.Title}</Typography>
+                  <Tooltip content="Add to favourites" position="right">
+                    <button
+                      className="text-2xl"
+                      onClick={() => handlefavourites(data)}
+                    >
+                      {favouriteItems?.find(ele => ele.imdbID === data.imdbID)
+                        ? "★"
+                        : "☆"}
+                    </button>
+                  </Tooltip>
+                </div>
               </div>
               <Close
                 className="cross cursor-pointer rounded-sm border "
