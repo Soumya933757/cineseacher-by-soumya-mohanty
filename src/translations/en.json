@@ -5,28 +5,46 @@
     "movie": "Movie",
     "series": "Series",
     "viewDetails": "View details",
-    "director": "Director",
-    "actors": "Actors",
-    "boxOffice": "Box Office",
-    "year": "Year",
-    "runTime": "Runtime",
-    "language": "Language",
-    "rated": "Rated",
-    "type": "Type"
+    "inputYear": "Year",
+    "director": "<span>Director:</span> {{value}}",
+    "actors": "<span>Actors:</span> {{value}}",
+    "boxOffice": "<span>Box Office:</span> {{value}}",
+    "year": "<span>Year:</span> {{value}}",
+    "runTime": "<span>Runtime:</span> {{value}}",
+    "language": "<span>Language:</span> {{value}}",
+    "rated": "<span>Rated:</span> {{value}}",
+    "type": "Type",
+    "addToFavourites": "Add to favourites",
+    "removeFromFavourites": "Remove from favourites",
+    "searchForMovie": "Search a movie or series",
+    "yearValidation": "Year must be between 1900 and 2025"
   },
   "history": {
     "viewHistory": "View History",
     "clearAll": "Clear all",
     "clearAlert": "Are you sure you want to clear all items from your history? This action cannot be undone.",
     "deleteAlert": "Are you sure you want to delete {{title}} from your history? This action cannot be undone.",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "clearTitle": "Clear History?",
+    "deleteTitle": "Delete Item?",
+    "delete": "Delete",
+    "nothingToShow": "Nothing to show"
   },
   "favourite": {
-    "rating": "Rating"
+    "rating": "Rating",
+    "noFavourites": "No favourites found"
   },
   "header": {
     "title": "<typography>Cine</typography> Searcher",
     "home": "Home",
     "favourites": "Favourites"
+  },
+  "pageNotFound": {
+    "title": "The page you're looking for can't be found",
+    "label": "Back to home"
+  },
+  "error": {
+    "noInternetConnection": "No Internet Connection",
+    "networkError": "Network Error"
   }
 }

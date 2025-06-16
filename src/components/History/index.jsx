@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 
-import { Typography } from "neetoui";
+import { NoData, Typography } from "neetoui";
 import { useTranslation } from "react-i18next";
 import useHistoryItemStore from "stores/useHistoryItemStore";
 
-import HistoryDeleteModal from "./HistoryDeleteModal";
-import HistoryItem from "./HistoryItem";
+import DeleteModal from "./DeleteModal";
+import Item from "./Item";
 
 const History = () => {
   const [isDeleteModal, setIsDeleteModal] = useState(false);
 
   const { t } = useTranslation();
 
-  const { historyItems } = useHistoryItemStore();
+  const { historyItems } = useHistoryItemStore.pick();
 
   return (
     <div className="hidden h-screen w-full flex-col items-center justify-between p-10 pt-16 md:flex md:w-4/12 lg:w-3/12">
@@ -26,18 +26,18 @@ const History = () => {
         >
           {t("history.clearAll")}
         </button>
-        {isDeleteModal && (
-          <HistoryDeleteModal setIsDeleteModal={setIsDeleteModal} />
-        )}
+        <DeleteModal
+          isDeleteModal={isDeleteModal}
+          message={t("history.clearAlert")}
+          setIsDeleteModal={setIsDeleteModal}
+        />
       </div>
       <div className="History mt-6 flex h-full w-full flex-col items-center gap-2 overflow-y-scroll bg-white p-5">
         {historyItems.length > 0 ? (
-          historyItems.map((item, index) => (
-            <HistoryItem item={item} key={index} />
-          ))
+          historyItems.map((item, index) => <Item item={item} key={index} />)
         ) : (
           <div className="flex h-full w-full items-center justify-center">
-            Nothing to show
+            <NoData title={t("history.nothingToShow")} />
           </div>
         )}
       </div>
