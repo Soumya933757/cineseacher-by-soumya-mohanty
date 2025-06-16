@@ -4,11 +4,14 @@ import PageLoader from "components/commons/PageLoader";
 import { useFetchMovie } from "hooks/reactQuery/moviesApi";
 import { Close } from "neetoicons";
 import { Tooltip, Typography } from "neetoui";
+import { useTranslation } from "react-i18next";
 import useFavouriteItemStore from "stores/useFavouriteItemStore";
 
 const MovieDetails = ({ searchId, setIsModalOpen }) => {
   const { favouriteItems, addFavouriteItem, removeFavouriteItem } =
     useFavouriteItemStore();
+
+  const { t } = useTranslation();
 
   const { data, isFetching } = useFetchMovie(searchId);
 
@@ -61,7 +64,7 @@ const MovieDetails = ({ searchId, setIsModalOpen }) => {
           <div className="flex w-full  justify-between ">
             <div className="w-4/12">
               <img
-                alt={data?.Title}
+                alt={t("movie.alt", { title: data.Title })}
                 className=""
                 src={data?.Poster}
                 onError={e => {
@@ -74,31 +77,31 @@ const MovieDetails = ({ searchId, setIsModalOpen }) => {
             <div className="flex w-7/12 flex-col gap-2 ">
               <div className="mb-4">{data.Plot}</div>
               <p>
-                <span className="font-semibold">Director: </span>
+                <span className="font-semibold">{t("movie.director")}: </span>
                 {data.Director}
               </p>
               <p>
-                <span className="font-semibold">Actors: </span>
+                <span className="font-semibold">{t("movie.actors")}: </span>
                 {data.Actors}
               </p>
               <p>
-                <span className="font-semibold">Box Office: </span>
+                <span className="font-semibold">{t("movie.boxOffice")}: </span>
                 {data.BoxOffice}
               </p>
               <p>
-                <span className="font-semibold">Year: </span>
+                <span className="font-semibold">{t("movie.year")}: </span>
                 {data.Year}
               </p>
               <p>
-                <span className="font-semibold">Runtime: </span>
+                <span className="font-semibold">{t("movie.runTime")}: </span>
                 {data.Runtime}
               </p>
               <p>
-                <span className="font-semibold">Language: </span>
+                <span className="font-semibold">{t("movie.language")}: </span>
                 {data.Language}
               </p>
               <p>
-                <span className="font-semibold">Rated: </span>
+                <span className="font-semibold">{t("movie.rated")}: </span>
                 {data.Rated}
               </p>
             </div>

@@ -2,10 +2,14 @@ import React from "react";
 
 import { Close } from "neetoicons";
 import { Typography } from "neetoui";
+import { useTranslation } from "react-i18next";
 import useHistoryItemStore from "stores/useHistoryItemStore";
 
 const HistoryDeleteModal = ({ setIsDeleteModal }) => {
+  const { t } = useTranslation();
+
   const { clearHistory } = useHistoryItemStore();
+
   const handleClearAll = () => {
     clearHistory();
     setIsDeleteModal(false);
@@ -20,21 +24,20 @@ const HistoryDeleteModal = ({ setIsDeleteModal }) => {
           onClick={() => setIsDeleteModal(false)}
         />
         <Typography className="mt-3" style="h5">
-          Are you sure you want to clear all items from your history? This
-          action cannot be undone.
+          {t("history.clearAlert")}
         </Typography>
         <div className="mt-5 flex items-center justify-between">
           <button
             className="rounded-md bg-red-500 px-2 py-1 text-white"
             onClick={handleClearAll}
           >
-            Clear all
+            {t("history.clearAll")}
           </button>
           <button
             className="rounded-md bg-black px-2 py-1 text-white"
             onClick={() => setIsDeleteModal(false)}
           >
-            Cancel
+            {t("history.cancel")}
           </button>
         </div>
       </div>

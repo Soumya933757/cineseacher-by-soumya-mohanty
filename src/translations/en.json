@@ -1,0 +1,32 @@
+{
+  "movie": {
+    "search": "Input search text",
+    "alt": "{{title}}",
+    "movie": "Movie",
+    "series": "Series",
+    "viewDetails": "View details",
+    "director": "Director",
+    "actors": "Actors",
+    "boxOffice": "Box Office",
+    "year": "Year",
+    "runTime": "Runtime",
+    "language": "Language",
+    "rated": "Rated",
+    "type": "Type"
+  },
+  "history": {
+    "viewHistory": "View History",
+    "clearAll": "Clear all",
+    "clearAlert": "Are you sure you want to clear all items from your history? This action cannot be undone.",
+    "deleteAlert": "Are you sure you want to delete {{title}} from your history? This action cannot be undone.",
+    "cancel": "Cancel"
+  },
+  "favourite": {
+    "rating": "Rating"
+  },
+  "header": {
+    "title": "<typography>Cine</typography> Searcher",
+    "home": "Home",
+    "favourites": "Favourites"
+  }
+}

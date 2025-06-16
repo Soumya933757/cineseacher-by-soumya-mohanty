@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import { Typography } from "neetoui";
+import { useTranslation } from "react-i18next";
 import useHistoryItemStore from "stores/useHistoryItemStore";
 
 import HistoryDeleteModal from "./HistoryDeleteModal";
@@ -8,19 +9,22 @@ import HistoryItem from "./HistoryItem";
 
 const History = () => {
   const [isDeleteModal, setIsDeleteModal] = useState(false);
+
+  const { t } = useTranslation();
+
   const { historyItems } = useHistoryItemStore();
 
   return (
     <div className="hidden h-screen w-full flex-col items-center justify-between p-10 pt-16 md:flex md:w-4/12 lg:w-3/12">
       <div className="flex w-full items-center justify-between px-2 font-bold">
         <Typography style="h3" weight="bold">
-          View History
+          {t("history.viewHistory")}
         </Typography>
         <button
           className="font-semibold text-red-500"
           onClick={() => setIsDeleteModal(prev => !prev)}
         >
-          Clear all
+          {t("history.clearAll")}
         </button>
         {isDeleteModal && (
           <HistoryDeleteModal setIsDeleteModal={setIsDeleteModal} />

@@ -1,10 +1,13 @@
 import React from "react";
 
 import { Close } from "neetoicons";
+import { Checkbox, Input, Typography } from "neetoui";
+import { useTranslation } from "react-i18next";
 
 const MovieFilter = ({ filterData, setFilterData, setIsDropdown }) => {
-  const handleChange = e => {
-    const { name, type, checked, value } = e.target;
+  const { t } = useTranslation();
+  const handleChange = event => {
+    const { name, type, checked, value } = event.target;
     setFilterData(prev => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
@@ -19,38 +22,34 @@ const MovieFilter = ({ filterData, setFilterData, setIsDropdown }) => {
         onClick={() => setIsDropdown(false)}
       />
       <div className="flex w-full flex-col gap-1">
-        <label htmlFor="year">Year</label>
-        <input
-          className="rounded-md border border-gray-200 px-2 py-1"
+        <Input
+          label={t("movie.year")}
           name="year"
           type="number"
           value={filterData.year}
-          onChange={e => handleChange(e)}
+          onChange={event => handleChange(event)}
         />
       </div>
       <div className="mt-5 flex w-full flex-col gap-2">
-        <label>Type</label>
+        <Typography className="mb-1">{t("movie.type")}</Typography>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <input
+            <Checkbox
               checked={filterData.movie}
-              className=""
-              id="movie"
+              label={t("movie.movie")}
               name="movie"
               type="checkbox"
-              onChange={e => handleChange(e)}
+              onChange={event => handleChange(event)}
             />
-            <label htmlFor="movie">Movie</label>
           </div>
           <div className="flex items-center gap-2">
-            <input
+            <Checkbox
               checked={filterData.series}
-              id="series"
+              label={t("movie.series")}
               name="series"
               type="checkbox"
-              onChange={e => handleChange(e)}
+              onChange={event => handleChange(event)}
             />
-            <label htmlFor="series">Series</label>
           </div>
         </div>
       </div>
