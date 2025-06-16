@@ -3,6 +3,7 @@ import React from "react";
 import { Typography } from "neetoui";
 import { Trans, useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
+import routes from "routes";
 
 const Header = () => {
   const { t } = useTranslation();
@@ -16,10 +17,10 @@ const Header = () => {
         />
       </Typography>
       <div className="flex items-center gap-6">
-        <NavLink exact to="/">
+        <NavLink exact to={routes.home}>
           {t("header.home")}
         </NavLink>
-        <NavLink exact to="/favourites">
+        <NavLink exact to={routes.favourites}>
           {t("header.favourites")}
         </NavLink>
       </div>

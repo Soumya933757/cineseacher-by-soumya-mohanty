@@ -1,13 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Close } from "neetoicons";
 import { Checkbox, Input, Typography } from "neetoui";
 import { useTranslation } from "react-i18next";
 
-const MovieFilter = ({ filterData, setFilterData, setIsDropdown }) => {
+const Filter = ({ filterData, setFilterData, setIsDropdown }) => {
+  const [yearError, setYearError] = useState("");
   const { t } = useTranslation();
   const handleChange = event => {
     const { name, type, checked, value } = event.target;
+
+    if (name === "year") {
+      const yearValue = parseInt(value, 10);
+      if (yearValue < 1900 || yearValue > 2025) {
+        setYearError(t("movie.yearValidation"));
+      } else {
+        setYearError("");
+      }
+    }
+
     setFilterData(prev => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
@@ -23,12 +34,17 @@ const MovieFilter = ({ filterData, setFilterData, setIsDropdown }) => {
       />
       <div className="flex w-full flex-col gap-1">
         <Input
-          label={t("movie.year")}
+          label={t("movie.inputYear")}
           name="year"
           type="number"
           value={filterData.year}
           onChange={event => handleChange(event)}
         />
+        {yearError && (
+          <Typography className="text-red-500" style="body3">
+            {t("movie.yearValidation")}
+          </Typography>
+        )}
       </div>
       <div className="mt-5 flex w-full flex-col gap-2">
         <Typography className="mb-1">{t("movie.type")}</Typography>
@@ -57,4 +73,4 @@ const MovieFilter = ({ filterData, setFilterData, setIsDropdown }) => {
   );
 };
 
-export default MovieFilter;
+export default Filter;

@@ -3,14 +3,14 @@ import React, { useEffect, useRef, useState } from "react";
 import PageLoader from "components/commons/PageLoader";
 import { useShowMovies } from "hooks/reactQuery/moviesApi";
 import useDebounce from "hooks/useDebounce";
-import { Filter, Search } from "neetoicons";
-import { Input, Pagination, Toastr } from "neetoui";
+import { Filter as FilterIcon, Search } from "neetoicons";
+import { Input, NoData, Pagination, Toastr } from "neetoui";
 import { useTranslation } from "react-i18next";
 import { useHistory, useLocation } from "react-router-dom";
 
+import Card from "./Card";
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "./constants";
-import MovieCard from "./MovieCard";
-import MovieFilter from "./MovieFilter";
+import Filter from "./Filter";
 
 const Movies = () => {
   const history = useHistory();
@@ -30,9 +30,9 @@ const Movies = () => {
   const inputRef = useRef(null);
 
   useEffect(() => {
-    const handleKeyDown = e => {
-      if (e.key === "/") {
-        e.preventDefault();
+    const handleKeyDown = event => {
+      if (event.key === "/") {
+        event.preventDefault();
         inputRef.current?.focus();
       }
     };
@@ -44,8 +44,8 @@ const Movies = () => {
     };
   }, []);
 
-  const handleChange = e => {
-    setSearchKey(e.target.value);
+  const handleChange = event => {
+    setSearchKey(event.target.value);
     setPage(1);
   };
 
@@ -56,20 +56,43 @@ const Movies = () => {
   const debouncedSearch = useDebounce(searchKey);
   const debouncedFilterData = useDebounce(filterData);
 
-  const { data: movies = {}, isFetching } = useShowMovies(
-    debouncedSearch,
+  const getType = filterData => {
+    if (filterData.movie && !filterData.series) return "movie";
+
+    if (!filterData.movie && filterData.series) return "series";
+
+    return "";
+  };
+
+  const type = getType(debouncedFilterData);
+
+  const movieParamsData = {
+    s: debouncedSearch,
     page,
-    debouncedFilterData
-  );
+    y: debouncedFilterData.year || undefined,
+    type,
+  };
+
+  const { data: movies = {}, isFetching } = useShowMovies(movieParamsData);
 
   useEffect(() => {
     const params = new URLSearchParams();
+
     if (debouncedSearch.trim()) {
       params.set("search", debouncedSearch);
       params.set("page", page);
     }
+
+    if (debouncedFilterData.year) {
+      params.set("year", debouncedFilterData.year);
+    }
+
+    if (type) {
+      params.set("type", type);
+    }
+
     history.replace({ search: params.toString() });
-  }, [debouncedSearch, page, history]);
+  }, [debouncedSearch, page, debouncedFilterData, history]);
 
   useEffect(() => {
     if (
@@ -82,7 +105,7 @@ const Movies = () => {
   }, [movies]);
 
   return (
-    <div className="homepage flex w-full flex-col items-center justify-between p-10 pt-16 md:h-screen md:w-9/12">
+    <div className="homepage flex w-full flex-col items-center justify-between border-r-2 border-gray-200 p-10 pt-16 md:h-screen md:w-9/12">
       <div className="relative flex w-full items-center gap-3">
         <Input
           placeholder={t("movie.search")}
@@ -90,14 +113,14 @@ const Movies = () => {
           ref={inputRef}
           type="search"
           value={searchKey}
-          onChange={e => handleChange(e)}
+          onChange={event => handleChange(event)}
         />
-        <Filter
+        <FilterIcon
           className="cursor-pointer"
           onClick={() => setIsDropdown(prev => !prev)}
         />
         {isDropdown && (
-          <MovieFilter
+          <Filter
             filterData={filterData}
             setFilterData={setFilterData}
             setIsDropdown={setIsDropdown}
@@ -113,7 +136,7 @@ const Movies = () => {
               <div className="flex h-full w-full flex-col justify-between gap-4">
                 <div className="grid  grid-cols-2 grid-rows-2 gap-4 md:grid-cols-3 lg:grid-cols-5 ">
                   {movies.Search.map((movie, index) => (
-                    <MovieCard key={index} movie={movie} />
+                    <Card key={index} movie={movie} />
                   ))}
                 </div>
                 <div className="mt-4 self-center lg:self-end">
@@ -127,7 +150,7 @@ const Movies = () => {
               </div>
             ) : (
               <div className="flex h-full w-full items-center justify-center">
-                No movies found
+                <NoData title={t("movie.searchForMovie")} />
               </div>
             )}
           </div>

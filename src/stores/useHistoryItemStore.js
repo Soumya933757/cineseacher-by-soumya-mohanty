@@ -1,14 +1,15 @@
+import { removeBy } from "neetocist";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 const useHistoryItemStore = create(
   persist(
     set => ({
-      active: {},
+      lastSelectedItem: {},
       historyItems: [],
-      setItemActive: () =>
+      setLastSelectedItem: () =>
         set(state => ({
-          active: state.historyItems.reduce(
+          lastSelectedItem: state.historyItems.reduce(
             (latest, item) => (item.date > latest.date ? item : latest),
             { date: 0 }
           ),
@@ -25,8 +26,9 @@ const useHistoryItemStore = create(
         })),
       removeHistoryItem: id =>
         set(state => ({
-          historyItems: state.historyItems.filter(item => item.imdbID !== id),
+          historyItems: removeBy({ imdbID: id }, state.historyItems),
         })),
+
       clearHistory: () => set({ historyItems: [] }),
     }),
     { name: "history-items-store" }
