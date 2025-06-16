@@ -5,6 +5,7 @@ import { useShowMovies } from "hooks/reactQuery/moviesApi";
 import useDebounce from "hooks/useDebounce";
 import { Filter, Search } from "neetoicons";
 import { Input, Pagination, Toastr } from "neetoui";
+import { useTranslation } from "react-i18next";
 import { useHistory, useLocation } from "react-router-dom";
 
 import { DEFAULT_PAGE, DEFAULT_PAGE_SIZE } from "./constants";
@@ -23,6 +24,8 @@ const Movies = () => {
     series: true,
   });
   const [isDropdown, setIsDropdown] = useState(false);
+
+  const { t } = useTranslation();
 
   const inputRef = useRef(null);
 
@@ -82,7 +85,7 @@ const Movies = () => {
     <div className="homepage flex w-full flex-col items-center justify-between p-10 pt-16 md:h-screen md:w-9/12">
       <div className="relative flex w-full items-center gap-3">
         <Input
-          placeholder="Input search text"
+          placeholder={t("movie.search")}
           prefix={<Search />}
           ref={inputRef}
           type="search"

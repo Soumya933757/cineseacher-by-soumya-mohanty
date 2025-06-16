@@ -1,9 +1,10 @@
 import React from "react";
 
 import { Typography } from "neetoui";
+import { useTranslation } from "react-i18next";
 
 const FavouriteItem = ({ item }) => {
-  console.log(item);
+  const { t } = useTranslation();
 
   return (
     <div
@@ -11,7 +12,9 @@ const FavouriteItem = ({ item }) => {
       key={item.imdbID}
     >
       <Typography style="h6">{item.Title}</Typography>
-      <Typography style="h6">Rating: {item.imdbRating}/10</Typography>
+      <Typography style="h6">
+        {t("favourite.rating")}: {item.imdbRating}/10
+      </Typography>
     </div>
   );
 };
