@@ -28,3 +28,6 @@ body,.header {
 .active{
   color: #2f62ff;
 }
+.favourite{
+  height: 80vh;
+}

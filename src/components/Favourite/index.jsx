@@ -1,6 +1,7 @@
 import React from "react";
 
 import { NoData } from "neetoui";
+import { isEmpty } from "ramda";
 import { useTranslation } from "react-i18next";
 import useFavouriteItemStore from "stores/useFavouriteItemStore";
 
@@ -13,13 +14,10 @@ const Favourite = () => {
 
   return (
     <div className="flex min-h-screen w-full flex-col items-center gap-4 pt-16">
-      {favouriteItems?.length > 0 ? (
+      {!isEmpty(favouriteItems) ? (
         favouriteItems.map(item => <Item item={item} key={item.imdbID} />)
       ) : (
-        <div
-          className="flex w-full items-center justify-center"
-          style={{ height: "80vh" }}
-        >
+        <div className="favourite flex w-full items-center justify-center">
           <NoData title={t("favourite.noFavourites")} />
         </div>
       )}

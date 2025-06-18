@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import { NoData, Typography } from "neetoui";
+import { isEmpty } from "ramda";
 import { useTranslation } from "react-i18next";
 import useHistoryItemStore from "stores/useHistoryItemStore";
 
@@ -22,7 +23,8 @@ const History = () => {
         </Typography>
         <button
           className="font-semibold text-red-500"
-          onClick={() => setIsDeleteModal(prev => !prev)}
+          disabled={isEmpty(historyItems)}
+          onClick={() => setIsDeleteModal(previous => !previous)}
         >
           {t("history.clearAll")}
         </button>
@@ -33,7 +35,7 @@ const History = () => {
         />
       </div>
       <div className="History mt-6 flex h-full w-full flex-col items-center gap-2 overflow-y-scroll bg-white p-5">
-        {historyItems.length > 0 ? (
+        {!isEmpty(historyItems) ? (
           historyItems.map((item, index) => <Item item={item} key={index} />)
         ) : (
           <div className="flex h-full w-full items-center justify-center">

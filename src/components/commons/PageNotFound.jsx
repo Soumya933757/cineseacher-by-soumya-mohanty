@@ -2,6 +2,7 @@ import React from "react";
 
 import { NoData } from "neetoui";
 import { useTranslation } from "react-i18next";
+import routes from "routes";
 
 const PageNotFound = () => {
   const { t } = useTranslation();
@@ -13,7 +14,7 @@ const PageNotFound = () => {
         primaryButtonProps={{
           label: t("pageNotFound.label"),
           className: "bg-neutral-800 hover:bg-neutral-950",
-          to: "/",
+          to: routes.home,
         }}
       />
     </div>

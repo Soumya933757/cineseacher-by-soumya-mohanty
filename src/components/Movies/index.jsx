@@ -3,8 +3,10 @@ import React, { useEffect, useRef, useState } from "react";
 import PageLoader from "components/commons/PageLoader";
 import { useShowMovies } from "hooks/reactQuery/moviesApi";
 import useDebounce from "hooks/useDebounce";
+import useFocusOnSlashKey from "hooks/useFocusOnSlashKey";
 import { Filter as FilterIcon, Search } from "neetoicons";
-import { Input, NoData, Pagination, Toastr } from "neetoui";
+import { Input, NoData, Pagination } from "neetoui";
+import { equals, isEmpty } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useHistory, useLocation } from "react-router-dom";
 
@@ -19,9 +21,9 @@ const Movies = () => {
   const [searchKey, setSearchKey] = useState(queryParams.get("search") || "");
   const [page, setPage] = useState(Number(queryParams.get("page")) || 1);
   const [filterData, setFilterData] = useState({
-    year: "",
-    movie: true,
-    series: true,
+    year: queryParams.get("year") || "",
+    movie: !equals(queryParams.get("type"), "series"),
+    series: !equals(queryParams.get("type"), "movie"),
   });
   const [isDropdown, setIsDropdown] = useState(false);
 
@@ -29,24 +31,16 @@ const Movies = () => {
 
   const inputRef = useRef(null);
 
-  useEffect(() => {
-    const handleKeyDown = event => {
-      if (event.key === "/") {
-        event.preventDefault();
-        inputRef.current?.focus();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
+  useFocusOnSlashKey(inputRef);
 
   const handleChange = event => {
     setSearchKey(event.target.value);
     setPage(1);
+    setFilterData({
+      year: "",
+      movie: true,
+      series: true,
+    });
   };
 
   const handlePageChange = page => {
@@ -94,16 +88,6 @@ const Movies = () => {
     history.replace({ search: params.toString() });
   }, [debouncedSearch, page, debouncedFilterData, history]);
 
-  useEffect(() => {
-    if (
-      movies &&
-      (movies.Error === "Movie not found!" ||
-        movies.Error === "Too many results.")
-    ) {
-      Toastr.error(movies.Error, { autoClose: 2000, position: "bottom-left" });
-    }
-  }, [movies]);
-
   return (
     <div className="homepage flex w-full flex-col items-center justify-between border-r-2 border-gray-200 p-10 pt-16 md:h-screen md:w-9/12">
       <div className="relative flex w-full items-center gap-3">
@@ -124,6 +108,7 @@ const Movies = () => {
             filterData={filterData}
             setFilterData={setFilterData}
             setIsDropdown={setIsDropdown}
+            setPage={setPage}
           />
         )}
       </div>
@@ -132,16 +117,16 @@ const Movies = () => {
           <PageLoader />
         ) : (
           <div className="h-full w-full">
-            {movies?.Search?.length > 0 ? (
+            {movies?.Search && !isEmpty(movies?.Search) ? (
               <div className="flex h-full w-full flex-col justify-between gap-4">
                 <div className="grid  grid-cols-2 grid-rows-2 gap-4 md:grid-cols-3 lg:grid-cols-5 ">
-                  {movies.Search.map((movie, index) => (
+                  {movies?.Search?.map((movie, index) => (
                     <Card key={index} movie={movie} />
                   ))}
                 </div>
                 <div className="mt-4 self-center lg:self-end">
                   <Pagination
-                    count={Number(movies.totalResults)}
+                    count={Number(movies?.totalResults) || 0}
                     navigate={page => handlePageChange(page)}
                     pageNo={page || DEFAULT_PAGE}
                     pageSize={DEFAULT_PAGE_SIZE}

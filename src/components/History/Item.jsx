@@ -3,11 +3,13 @@ import React, { useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 import { Delete } from "neetoicons";
 import { Alert } from "neetoui";
+import { equals } from "ramda";
 import { useTranslation } from "react-i18next";
 import useHistoryItemStore from "stores/useHistoryItemStore";
+import { convertPascalToCamelCase } from "utils/convertPascalToCamelCase";
 
 const Item = ({ item }) => {
-  const { Title: title, imdbID: imdbId } = item;
+  const { title, imdbID } = convertPascalToCamelCase(item);
   const [isItemDeleteModal, setIsItemDeleteModal] = useState(false);
 
   const { t } = useTranslation();
@@ -18,7 +20,7 @@ const Item = ({ item }) => {
   const itemRef = useRef(0);
 
   const handleDelete = () => {
-    removeHistoryItem(imdbId);
+    removeHistoryItem(imdbID);
     setLastSelectedItem();
     setIsItemDeleteModal(false);
   };
@@ -31,9 +33,9 @@ const Item = ({ item }) => {
 
   return (
     <div
-      ref={imdbId === lastSelectedItem.imdbID ? itemRef : null}
+      ref={equals(imdbID, lastSelectedItem.imdbID) ? itemRef : null}
       className={classNames(
-        imdbId === lastSelectedItem.imdbID ? "recent" : "old",
+        equals(imdbID, lastSelectedItem.imdbID) ? "recent" : "old",
         "flex w-full items-center justify-between rounded-md px-2 py-1"
       )}
     >

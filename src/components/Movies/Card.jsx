@@ -1,19 +1,17 @@
 import React, { useState } from "react";
 
+import dayjs from "dayjs";
 import { Button, Typography } from "neetoui";
+import { equals } from "ramda";
 import { useTranslation } from "react-i18next";
 import useHistoryItemStore from "stores/useHistoryItemStore";
+import { convertPascalToCamelCase } from "utils/convertPascalToCamelCase";
 
 import Details from "./Details";
 
 const Card = ({ movie }) => {
-  const {
-    Title: title,
-    Poster: poster,
-    Type: type,
-    Year: year,
-    imdbID: imdbId,
-  } = movie;
+  const { title, poster, type, year, imdbID } = convertPascalToCamelCase(movie);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { t } = useTranslation();
@@ -26,12 +24,14 @@ const Card = ({ movie }) => {
   } = useHistoryItemStore.pick();
 
   const handleClick = item => {
-    setIsModalOpen(prev => !prev);
-    if (!historyItems.find(ele => ele.imdbID === item.imdbID)) {
-      const newItem = { ...item, date: Date.now() };
+    setIsModalOpen(previous => !previous);
+    if (!historyItems.find(element => equals(element.imdbID, item.imdbID))) {
+      const newItem = { ...item, date: dayjs().valueOf() };
       addHistoryItem(newItem);
     } else {
-      const prevItem = historyItems.find(ele => ele.imdbID === item.imdbID);
+      const prevItem = historyItems.find(element =>
+        equals(element.imdbID, item.imdbID)
+      );
       updateHistoryItem(prevItem);
     }
     setLastSelectedItem();
@@ -62,7 +62,11 @@ const Card = ({ movie }) => {
         onClick={() => handleClick(movie)}
       />
       {isModalOpen && (
-        <Details searchId={imdbId} setIsModalOpen={setIsModalOpen} />
+        <Details
+          isModalOpen={isModalOpen}
+          searchId={imdbID}
+          setIsModalOpen={setIsModalOpen}
+        />
       )}
     </div>
   );
