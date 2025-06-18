@@ -2,27 +2,39 @@ import React, { useState } from "react";
 
 import { Close } from "neetoicons";
 import { Checkbox, Input, Typography } from "neetoui";
+import { equals } from "ramda";
 import { useTranslation } from "react-i18next";
+import * as Yup from "yup";
 
-const Filter = ({ filterData, setFilterData, setIsDropdown }) => {
+import { DEFAULT_PAGE } from "./constants";
+
+const Filter = ({ filterData, setFilterData, setIsDropdown, setPage }) => {
   const [yearError, setYearError] = useState("");
   const { t } = useTranslation();
-  const handleChange = event => {
+
+  const yearSchema = Yup.number()
+    .typeError("Year must be a number")
+    .min(1900, "Year must be after 1900")
+    .max(2025, "Year must be before 2025")
+    .nullable(true);
+
+  const handleChange = async event => {
     const { name, type, checked, value } = event.target;
 
-    if (name === "year") {
-      const yearValue = parseInt(value, 10);
-      if (yearValue < 1900 || yearValue > 2025) {
-        setYearError(t("movie.yearValidation"));
-      } else {
+    if (equals(name, "year")) {
+      try {
+        await yearSchema.validate(value);
         setYearError("");
+      } catch (err) {
+        setYearError(err.message);
       }
     }
 
-    setFilterData(prev => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
+    setFilterData(previous => ({
+      ...previous,
+      [name]: equals(type, "checkbox") ? checked : value,
     }));
+    setPage(DEFAULT_PAGE);
   };
 
   return (
@@ -42,7 +54,7 @@ const Filter = ({ filterData, setFilterData, setIsDropdown }) => {
         />
         {yearError && (
           <Typography className="text-red-500" style="body3">
-            {t("movie.yearValidation")}
+            {yearError}
           </Typography>
         )}
       </div>

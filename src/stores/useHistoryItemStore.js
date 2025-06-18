@@ -1,4 +1,6 @@
-import { removeBy } from "neetocist";
+import dayjs from "dayjs";
+import { modifyBy, removeBy } from "neetocist";
+import { assoc, maxBy, reduce } from "ramda";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -9,20 +11,21 @@ const useHistoryItemStore = create(
       historyItems: [],
       setLastSelectedItem: () =>
         set(state => ({
-          lastSelectedItem: state.historyItems.reduce(
-            (latest, item) => (item.date > latest.date ? item : latest),
-            { date: 0 }
+          lastSelectedItem: reduce(
+            maxBy(element => element.date),
+            { date: 0 },
+            state.historyItems
           ),
         })),
       addHistoryItem: item =>
         set(state => ({ historyItems: [item, ...state.historyItems] })),
       updateHistoryItem: item =>
         set(state => ({
-          historyItems: state.historyItems.map(ele => {
-            if (ele.imdbID === item.imdbID) return { ...ele, date: Date.now() };
-
-            return ele;
-          }),
+          historyItems: modifyBy(
+            { imdbID: item.imdbID },
+            element => assoc("date", dayjs().valueOf(), element),
+            state.historyItems
+          ),
         })),
       removeHistoryItem: id =>
         set(state => ({
